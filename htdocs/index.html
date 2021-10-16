@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Cryptoauth Demo</title>
+		<meta name="generator" content="https://github.com/johndoe31415/frankenticket" />
+		<link rel="stylesheet" href="font_latinmodernmono.css" />
+		<link rel="stylesheet" href="frankenticket.css" />
+	</head>
+	<body>
+		<img src="frankenticket.svg" style="width: 200px" />
+		<h1>Frankenticket</h1>
+		<p>
+		This demonstration is intended to illustrate the crucial difference between <b>encryption</b> and <b>authentication</b>.
+		</p>
+		<p>
+		Imagine you have a web service that authenticates users. It issues authentication "tickets" after successful login. However, the designers of this web service have implemented only <b>encryption</b> on the ticket, but not <b>authentication</b>. They're also using <a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB">ECB, electronic codebook,</a> as the operation mode of the underlying block cipher.
+		</p>
+		<p>
+		What this leaves is the following: While the key is only ever kept on the server-side and not accessible outside, an attacker cannot simply encrypt a ticket themselves. However, they do control a part of the ticket, namely the 'info' portion of it, by injecting JSON. In a real-world scenario this could be some metadata (such as the real name/nickname/tagline of the authenticated user). Therefore, an adversary can repeatedly log in with different crafted "info" fields and re-use the whole ciphertext blocks to create a <b>Frankenticket</b> by combining multiple other tickets into one that elevates the attacker's privileges.
+		</p>
+
+		<h1>Your assignment</h1>
+		<p>
+		Your assignment is to utilize the API that is accessible below to create a <b>Frankenticket</b> which grants you "read", "write" and "execute" privileges. By default, when you log in, you'll only ever be assigned the "read" privilege.
+		</p>
+		<p>
+		Firstly, play around with the "login" facility. You can leave the "info" field empty and repeatedly press the "Login" button to see the encrypted ticket on the left. To make it easier to see what's happening, you'll also be shown the decrypted ticket in its chunked form in the middle and pretty-printed on the right hand side.
+		</p>
+		<p>
+		Copy and paste a complete ticket into the below form for "Authentication". You'll notice the server is able to successfully decrypt the ticket, but you still only have "read" privileges. The attack has failed.
+		</p>
+		<p>
+		Now delete a whole block from that ticket (a complete line) and try to re-authenticate. You'll probably see that the resulting data cannot be parsed as JSON anymore, the data is invalid. You can also move blocks around there.
+		</p>
+		<p>
+		Now go back to the Login page and see how the ticket changes when you enter various inputs to the JSON "info" field. Things you can try are simple strings like "foobar" (including the quotation marks), numbers such as 12378, dictionaries such as { "foo": "bar", "moo": "koo" } or lists such as [ "foo", "bar", "moo" ]. Experiment with the data that is created and use the created corresponding ciphertext blocks to create your Frankenticket.
+		</p>
+
+
+		<h1>Login</h1>
+		<div class="form-group">
+			<label for="info">Info:</label>
+			<input type="text" id="info" placeholder='Your JSON data goes here. For example, "foo". Alternatively, can be left empty.'>
+		</div>
+		<button id="btn_login">Login</button>
+
+		<div>
+			<textarea id="login_ciphertext" cols="32" rows="15" readonly="true" class="readonly" placeholder="This will show the encrypted ciphertext ticket"></textarea>
+			<textarea id="login_plaintext" cols="16" rows="15" readonly="true" class="readonly" placeholder="This will show the corresponding decrypted plaintext ticket"></textarea>
+			<textarea id="login_plaintext_pretty" cols="64" rows="15" readonly="true" class="readonly" placeholder="This shows the pretty JSON interpretation the server is creating."></textarea>
+		</div>
+		<div class="message" id="msg_login"></div>
+
+		<h1>Authentication</h1>
+		<div>
+			<textarea id="auth_ciphertext" cols="32" rows="15" placeholder="Encrypted Frankenticket goes here as input"></textarea>
+			<textarea id="auth_plaintext" cols="16" rows="15" readonly="true" class="readonly" placeholder="This shows what the server decrypts this ticket to."></textarea>
+			<textarea id="auth_plaintext_pretty" cols="64" rows="15" readonly="true" class="readonly" placeholder="This shows the pretty JSON interpretation the server is seeing."></textarea>
+		</div>
+		<div>
+			<button id="btn_authenticate">Authenticate</button>
+		</div>
+
+		<div class="message" id="msg_auth"></div>
+
+
+		<script type="module">
+			import {FrankenTicket} from "./frankenticket.js";
+			const ui_elements = {
+				"info": document.querySelector("#info"),
+				"login_ciphertext": document.querySelector("#login_ciphertext"),
+				"login_plaintext": document.querySelector("#login_plaintext"),
+				"login_plaintext_pretty": document.querySelector("#login_plaintext_pretty"),
+				"auth_ciphertext": document.querySelector("#auth_ciphertext"),
+				"auth_plaintext": document.querySelector("#auth_plaintext"),
+				"auth_plaintext_pretty": document.querySelector("#auth_plaintext_pretty"),
+				"msg_login": document.querySelector("#msg_login"),
+				"msg_auth": document.querySelector("#msg_auth"),
+			};
+			/* TODO: Change this to your actual URI */
+			const frankenticket = new FrankenTicket("https://www.my-server.com/cgi-bin/frankenticket.py", ui_elements);
+			document.querySelector("#btn_login").addEventListener("click", (event) => frankenticket.login());
+			document.querySelector("#btn_authenticate").addEventListener("click", (event) => frankenticket.auth());
+		</script>
+
+	</body>
+</html>
