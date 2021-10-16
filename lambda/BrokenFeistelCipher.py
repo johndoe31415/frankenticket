@@ -45,18 +45,22 @@ class BrokenFeistelCipher():
 	def _apply_round(subkey, data):
 		return hashlib.md5(subkey + data).digest()
 
+	@staticmethod
+	def _xor(a, b):
+		return bytes(x ^ y for (x, y) in zip(a, b))
+
 	def encrypt(self, block):
 		(l_n, r_n) = (block[ : 8], block[8 : ])
 		for subkey in self._subkeys:
 			rk = self._apply_round(subkey, r_n)[:8]
-			(r_n, l_n) = (bytes(a ^ b for (a, b) in zip(l_n, rk)), r_n)
+			(r_n, l_n) = (self._xor(l_n, rk), r_n)
 		return l_n + r_n
 
 	def decrypt(self, block):
 		(r_n, l_n) = (block[ : 8], block[8 : ])
 		for subkey in reversed(self._subkeys):
 			rk = self._apply_round(subkey, r_n)[:8]
-			(r_n, l_n) = (bytes(a ^ b for (a, b) in zip(l_n, rk)), r_n)
+			(r_n, l_n) = (self._xor(l_n, rk), r_n)
 		return r_n + l_n
 
 if __name__ == "__main__":
