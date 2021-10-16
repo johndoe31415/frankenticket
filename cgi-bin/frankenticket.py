@@ -70,7 +70,6 @@ if not isinstance(json_data, dict):
 if not "action" in json_data:
 	return_error(400, "Unable to interpret JSON: No 'action' field present")
 
-
 if json_data["action"] == "login":
 	if not "info" in json_data:
 		info_dict = None

@@ -6,17 +6,20 @@ encryption and authentication. It creates a webservice in which a critical
 vulnerability exists and comes with a handy webinterface so that students can
 easily play around with the ciphertexts.
 
-## Setup
+## Demo
+You can view [a running implementation of this here](https://johndoe31415.github.io/frankenticket/) with .
+
+## Setup for local CGI execution
 1. Put the cgi-bin script in a CGI-executable directory.
 2. Put the htdocs in a web directory.
 3. Edit the key in `frankenticket.py` to a random value (the `config["key"]`
    value).
 4. Have the endpoint in `index.html` point to your cgi script.
 
-## Dependencies
+## Dependencies in local installation
 Python3 and python3-cryptography are needed to execute the CGI script.
 
-## Testing
+## Testing local CGI execution
 First you can test your CGI script locally:
 
 ```
@@ -46,6 +49,12 @@ abb3fbedb04a9063ce35d3bbf32ac8d5b220ea5eae92f9452db4b2f936541c5fd21",
 "decrypted_ticket": "{\"info\": null, \"privs\": [\"read\"], \"timestamp\":
 \"2021-10-16T08:50:13.988858Z\", \"username\": \"John Doe\"}           "}
 ```
+
+## Deployment on Amazon Lambda
+Frankenticket can also runs on AWS Lambda. You can simply use the two files in
+the `lambda/` subdirectory, deploy them onto Lambda and create a Web Gateway
+HTTP API. Note that in this case the encryption used is not AES, but a custom
+(broken) cipher because it limits the dependencies.
 
 ## License
 My code is licensed under the GNU GPL-3. The Latin Modern Mono font is subject
