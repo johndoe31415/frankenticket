@@ -1,4 +1,4 @@
-![Frankenticket Logo](https://raw.githubusercontent.com/johndoe31415/frankenticket/master/htdocs/frankenticket.svg)
+![Frankenticket Logo](https://raw.githubusercontent.com/johndoe31415/frankenticket/master/docs/frankenticket.svg)
 
 # frankenticket
 This demonstration is intended to illustrate the crucial difference between
