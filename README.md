@@ -14,7 +14,25 @@ easily play around with the ciphertexts.
 Python3 and python3-cryptography is needed to execute the CGI script.
 
 ## Testing
-You can test the implementation using cURL:
+First you can test your CGI script locally:
+
+```
+$ echo '{ "action": "login" }' | REQUEST_METHOD=POST ./frankenticket.py
+Status: 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST
+Access-Control-Allow-Headers: Content-Type
+Content-Type: application/json
+
+{"status": "ok", "ticket":
+"043da13ce1301ae560970d5bbd13f7ae0aefdfb9237b605ad4779712996e0923f024de294b002c
+2941a73e5a0f06744f4d2c9c4f25530ed5a4ac07d71fbef91795ef4c45c81df2ca30d68953ce8c6
+6c6e02639d500a66e4290936ee74a21713a826ca41c221240448ed252742e1c1084",
+"decrypted_ticket": "{\"info\": null, \"privs\": [\"read\"], \"timestamp\":
+\"2021-10-16T08:58:11.098453Z\", \"username\": \"John Doe\"}           "}
+```
+
+Then you can test the implementation using cURL via the web service:
 
 ```
 $ curl -d '{ "action": "login" }' https://my-server.com/cgi-bin/frankenticket.py
