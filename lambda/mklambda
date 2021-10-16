@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+#
+
+rm -f lambda.zip
+chmod 644 lambda_function.py BrokenFeistelCipher.py
+zip lambda.zip lambda_function.py BrokenFeistelCipher.py

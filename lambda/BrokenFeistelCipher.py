@@ -49,19 +49,30 @@ class BrokenFeistelCipher():
 	def _xor(a, b):
 		return bytes(x ^ y for (x, y) in zip(a, b))
 
-	def encrypt(self, block):
+	def _encrypt_block(self, block):
 		(l_n, r_n) = (block[ : 8], block[8 : ])
 		for subkey in self._subkeys:
 			rk = self._apply_round(subkey, r_n)[:8]
 			(r_n, l_n) = (self._xor(l_n, rk), r_n)
 		return l_n + r_n
 
-	def decrypt(self, block):
+	def _decrypt_block(self, block):
 		(r_n, l_n) = (block[ : 8], block[8 : ])
 		for subkey in reversed(self._subkeys):
 			rk = self._apply_round(subkey, r_n)[:8]
 			(r_n, l_n) = (self._xor(l_n, rk), r_n)
 		return r_n + l_n
+
+	@staticmethod
+	def _split_block(data, splitlen, callback):
+		for i in range(0, len(data), splitlen):
+			yield callback(data[i : i + splitlen])
+
+	def encrypt(self, plaintext):
+		return b"".join(self._split_block(plaintext, 16, self._encrypt_block))
+
+	def decrypt(self, plaintext):
+		return b"".join(self._split_block(plaintext, 16, self._decrypt_block))
 
 if __name__ == "__main__":
 	bfc = BrokenFeistelCipher(b"foobarx")
