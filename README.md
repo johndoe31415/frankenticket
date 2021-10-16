@@ -1,3 +1,5 @@
+![Frankenticket Logo](https://raw.githubusercontent.com/johndoe31415/frankenticket/master/htdocs/frankenticket.svg)
+
 # frankenticket
 This demonstration is intended to illustrate the crucial difference between
 encryption and authentication. It creates a webservice in which a critical
@@ -7,11 +9,12 @@ easily play around with the ciphertexts.
 ## Setup
 1. Put the cgi-bin script in a CGI-executable directory.
 2. Put the htdocs in a web directory.
-3. Edit the key in `frankenticket.py` to a random value (the config["key"] value).
+3. Edit the key in `frankenticket.py` to a random value (the `config["key"]`
+   value).
 4. Have the endpoint in `index.html` point to your cgi script.
 
 ## Dependencies
-Python3 and python3-cryptography is needed to execute the CGI script.
+Python3 and python3-cryptography are needed to execute the CGI script.
 
 ## Testing
 First you can test your CGI script locally:
