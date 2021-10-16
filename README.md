@@ -7,7 +7,7 @@ vulnerability exists and comes with a handy webinterface so that students can
 easily play around with the ciphertexts.
 
 ## Demo
-You can view [a running implementation of this here](https://johndoe31415.github.io/frankenticket/) with .
+You can view [a running implementation of this here](https://johndoe31415.github.io/frankenticket/).
 
 ## Setup for local CGI execution
 1. Put the cgi-bin script in a CGI-executable directory.
