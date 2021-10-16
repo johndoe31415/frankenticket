@@ -164,6 +164,11 @@ elif json_data["action"] == "auth":
 		break
 
 	print_headers(200, "OK", { "Content-Type": "application/json" })
-	print(json.dumps({ "status": "ok" if (ticket_err is None) else "failed", "ticket_text": decrypted_ticket_text, "ticket_data": ticket_data, "text": ticket_err }))
+	print(json.dumps({
+		"status": "ok" if (ticket_err is None) else "failed",
+		"ticket_text": decrypted_ticket_text,
+		"ticket_data": ticket_data,
+		"text": ticket_err,
+	}))
 else:
 	return_error(400, "Unknown JSON action: %s" % (json_data["action"]))
