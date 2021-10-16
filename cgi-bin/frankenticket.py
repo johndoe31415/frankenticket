@@ -20,14 +20,10 @@
 #
 #	Johannes Bauer <JohannesBauer@gmx.de>
 
-import cgi
 import sys
 import json
 import os
-import subprocess
-import sqlite3
 import datetime
-import contextlib
 import cryptography.hazmat.backends
 import cryptography.hazmat.primitives.ciphers
 import cryptography.hazmat.primitives.ciphers.algorithms
