@@ -29,6 +29,8 @@ import cryptography.hazmat.primitives.ciphers
 import cryptography.hazmat.primitives.ciphers.algorithms
 import cryptography.hazmat.primitives.ciphers.modes
 
+class EmitErrorException(Exception): pass
+
 config = {
 	# TODO: Change this to a random key.
 	"key": bytes.fromhex("700e262e085f16db8e970db29a6143a2"),
@@ -80,10 +82,13 @@ if json_data["action"] == "login":
 		if isinstance(element, dict):
 			for forbidden_key in [ "privs", "username", "info", "timestamp" ]:
 				if forbidden_key in element:
-					return_error(400, "Security alert: The '%s' key is disallowed in the 'info' dictionary." % (forbidden_key))
+					raise EmitErrorException("Security alert: The '%s' key is disallowed in the 'info' dictionary." % (forbidden_key))
 			for value in element.values():
 				filter_dict(value)
-	filter_dict(info_dict)
+	try:
+		filter_dict(info_dict)
+	except EmitErrorException as e:
+		return_error(400, str(e))
 
 	ticket = {
 		"username": "John Doe",
