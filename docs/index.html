@@ -45,16 +45,16 @@
 		<button id="btn_login">Login</button>
 
 		<div>
-			<textarea id="login_ciphertext" cols="32" rows="15" readonly="true" class="readonly" placeholder="This will show the encrypted ciphertext ticket"></textarea>
-			<textarea id="login_plaintext" cols="16" rows="15" readonly="true" class="readonly" placeholder="This will show the corresponding decrypted plaintext ticket"></textarea>
+			<textarea id="login_ciphertext" cols="34" rows="15" readonly="true" class="readonly" placeholder="This will show the encrypted ciphertext ticket"></textarea>
+			<textarea id="login_plaintext" cols="18" rows="15" readonly="true" class="readonly" placeholder="This will show the corresponding decrypted plaintext ticket"></textarea>
 			<textarea id="login_plaintext_pretty" cols="64" rows="15" readonly="true" class="readonly" placeholder="This shows the pretty JSON interpretation the server is creating."></textarea>
 		</div>
 		<div class="message" id="msg_login"></div>
 
 		<h1>Authentication</h1>
 		<div>
-			<textarea id="auth_ciphertext" cols="32" rows="15" placeholder="Encrypted Frankenticket goes here as input"></textarea>
-			<textarea id="auth_plaintext" cols="16" rows="15" readonly="true" class="readonly" placeholder="This shows what the server decrypts this ticket to."></textarea>
+			<textarea id="auth_ciphertext" cols="34" rows="15" placeholder="Encrypted Frankenticket goes here as input"></textarea>
+			<textarea id="auth_plaintext" cols="18" rows="15" readonly="true" class="readonly" placeholder="This shows what the server decrypts this ticket to."></textarea>
 			<textarea id="auth_plaintext_pretty" cols="64" rows="15" readonly="true" class="readonly" placeholder="This shows the pretty JSON interpretation the server is seeing."></textarea>
 		</div>
 		<div>
@@ -77,7 +77,8 @@
 				"msg_login": document.querySelector("#msg_login"),
 				"msg_auth": document.querySelector("#msg_auth"),
 			};
-			/* TODO: Change this to your actual URI */
+
+			/* TODO: Change this to your actual endpoint URI */
 			const frankenticket = new FrankenTicket("https://q3nxyloec6.execute-api.eu-central-1.amazonaws.com/default/FrankenTicket", ui_elements);
 			document.querySelector("#btn_login").addEventListener("click", (event) => frankenticket.login());
 			document.querySelector("#btn_authenticate").addEventListener("click", (event) => frankenticket.auth());
