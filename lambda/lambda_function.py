@@ -28,6 +28,8 @@ import base64
 import binascii
 from BrokenFeistelCipher import BrokenFeistelCipher
 
+class EmitErrorException(Exception): pass
+
 def lambda_handler(event, context):
 	# TODO: Change this to a random key.
 	cipher = BrokenFeistelCipher(key = bytes.fromhex("700e262e085f16db8e970db29a6143a2"))
@@ -75,10 +77,13 @@ def lambda_handler(event, context):
 			if isinstance(element, dict):
 				for forbidden_key in [ "privs", "username", "info", "timestamp" ]:
 					if forbidden_key in element:
-						return emit_error(400, "Security alert: The '%s' key is disallowed in the 'info' dictionary." % (forbidden_key))
+						raise EmitErrorException("Security alert: The '%s' key is disallowed in the 'info' dictionary." % (forbidden_key))
 				for value in element.values():
 					filter_dict(value)
-		filter_dict(info_dict)
+		try:
+			filter_dict(info_dict)
+		except EmitErrorException as e:
+			return emit_error(400, str(e))
 
 		ticket = {
 			"username": "John Doe",
